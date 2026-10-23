@@ -249,7 +249,17 @@ if st.session_state.extracted_tasks:
                 key=f"dependency_{i}"
             )
 
-            st.write(f"**Suggested Priority:** {priority}")
+            priority_options = ["High", "Medium", "Waiting", "Low"]
+
+            edited_priority = st.selectbox(
+                "Priority",
+                priority_options,
+                index=priority_options.index(priority),
+                key=f"priority_{i}",
+                help="Suggested based on the email. You can change it before adding the task."
+            )
+
+            st.caption("AI-suggested priority — editable before adding to your to-do list.")
 
             edited_details = st.text_area(
                 "Details",
@@ -257,7 +267,6 @@ if st.session_state.extracted_tasks:
                 key=f"details_{i}",
                 height=80
             )
-
             edited_questions = st.text_area(
                 "Open Questions / Notes",
                 value=task.get("open_questions", "None"),
@@ -274,7 +283,7 @@ if st.session_state.extracted_tasks:
                         "task": edited_task,
                         "goal": edited_goal,
                         "deadline_timing": edited_timing,
-                        "priority": priority,
+                        "priority": edited_priority,
                         "dependency": edited_dependency,
                         "status": "Not Started",
                         "details": edited_details,
